@@ -40,18 +40,18 @@
     
     //标题
     CGFloat titleX = (kScreenWidth - kMainTitleW) / 2;
-    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80, kMainTitleW, kMainTitleH)];
+    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80 + 50, kMainTitleW, kMainTitleH)];
     titleView.image = [UIImage imageNamed:@"main"];
     [self.view addSubview:titleView];
     
     //分数
     CGFloat scoreViewX = (kScreenWidth - kScoreViewW) / 2;
-    UIImageView *scoreView = [[UIImageView alloc]initWithFrame:CGRectMake(scoreViewX, 205, kScoreViewW, kScoreViewH)];
+    UIImageView *scoreView = [[UIImageView alloc]initWithFrame:CGRectMake(scoreViewX, 205 + 50, kScoreViewW, kScoreViewH)];
     scoreView.image = [UIImage imageNamed:@"score"];
     [self.view addSubview:scoreView];
     //显示分数
     CGFloat bestX = 200;
-    CGFloat bestY = 285;
+    CGFloat bestY = 285 + 30;
     CGFloat bestW = 40;
     CGFloat bestH = 20;
     UILabel *bestScore = [[UILabel alloc] initWithFrame:CGRectMake(bestX, bestY, bestW, bestH)];
@@ -62,7 +62,7 @@
     [self.view addSubview:bestScore];
     
     CGFloat scoreX = 200;
-    CGFloat scoreY = 240;
+    CGFloat scoreY = 240 + 30;
     CGFloat scoreW = 40;
     CGFloat scoreH = 20;
     UILabel *score = [[UILabel alloc] initWithFrame:CGRectMake(scoreX, scoreY, scoreW, scoreH)];
@@ -75,7 +75,7 @@
     
     //birds动画
     NSMutableArray *birds = [[NSMutableArray alloc]init];
-    UIImageView *birdViews = [[UIImageView alloc]initWithFrame:CGRectMake(140, 155, 40, 32)];
+    UIImageView *birdViews = [[UIImageView alloc]initWithFrame:CGRectMake((kScreenWidth - 40)/2, 155 + 50, 40, 32)];
     for (NSInteger i = 1; i <= 3; i++) {
         UIImage *bird = [UIImage imageNamed:[NSString stringWithFormat:@"bird%zi", i]];
         [birds addObject:bird];
@@ -89,19 +89,19 @@
     //创建速度按钮
     UIButton *rateButton = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat rateX = (kScreenWidth - kRateButtonW) / 2;
-    rateButton.frame = CGRectMake(rateX, 355, kRateButtonW, kRateButtonH);
+    rateButton.frame = CGRectMake(rateX, 355 + 50, kRateButtonW, kRateButtonH);
     [rateButton setImage:[UIImage imageNamed:@"rate"] forState:UIControlStateNormal];
     [self.view addSubview:rateButton];
     
     //创建开始按钮
     UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    startButton.frame = CGRectMake(50, 430, kStartButtonW, kStartButtonH);
+    startButton.frame = CGRectMake((kScreenWidth - 2* kStartButtonW - 20)/2, 430 + 50, kStartButtonW, kStartButtonH);
     [startButton setImage:[UIImage imageNamed:@"start"] forState:UIControlStateNormal];
     [self.view addSubview:startButton];
     
     //创建排行榜按钮
     UIButton *rankButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    rankButton.frame = CGRectMake(170, 430, kRankButtonW, kRankButtonH);
+    rankButton.frame = CGRectMake((kScreenWidth - 2* kStartButtonW - 20)/2 + 20 + kStartButtonW, 430 + 50, kRankButtonW, kRankButtonH);
     [rankButton setImage:[UIImage imageNamed:@"rank"] forState:UIControlStateNormal];
     [self.view addSubview:rankButton];
     

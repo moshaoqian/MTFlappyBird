@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     _titles = [NSArray arrayWithObjects:@"Top 1", @"Top 2", @"Top 3", @"Top 4", @"Top 5", nil];
     _ranks = (NSArray *)[DataTool objectForKey:kRankKey];
     
@@ -34,7 +34,7 @@
     
     //标题
     CGFloat titleX = (kScreenWidth - kMainTitleW) / 2;
-    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80, kMainTitleW, kMainTitleH)];
+    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 180 - 50, kMainTitleW, kMainTitleH)];
     titleView.image = [UIImage imageNamed:@"main"];
     [self.view addSubview:titleView];
     
@@ -47,7 +47,7 @@
 }
 
 -(void)setupTableView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(60, 160, kScreenWidth-120, kScreenHeight - 260) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(130, 260 - 50, kScreenWidth-120, kScreenHeight - 260) style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -77,8 +77,15 @@
     cell.textLabel.text = _titles[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone; //设置表格选择样式,不显示选中的样式
-    cell.detailTextLabel.text = _ranks[indexPath.row];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"Marker Felt" size:20];
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(100, 8, 40, 30)];
+    label.text = _ranks[indexPath.row];
+    label.font =  [UIFont fontWithName:@"Marker Felt" size:20];
+    label.textColor = [UIColor orangeColor];
+    [cell addSubview:label];
+    
+//    cell.detailTextLabel.text = _ranks[indexPath.row];
+//    cell.detailTextLabel.font = [UIFont fontWithName:@"Marker Felt" size:20];
+//    cell.detailTextLabel.textColor = [UIColor orangeColor];
     
     return cell;
 }

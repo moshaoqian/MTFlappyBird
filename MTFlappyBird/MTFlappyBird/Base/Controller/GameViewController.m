@@ -28,6 +28,19 @@
     CGRect topPipeFrame;
     UILabel *columnLabel;
     GameOverView *gameOver;
+    
+    //水果控件
+    UIImageView *fruitView;
+    //当前随机数
+    NSInteger currentArcNum;
+    //水果数组
+    NSArray *fruitImageArray;
+    //水果名称组
+    NSArray *fruitNameArray;
+    //水果背景
+    NSArray *fruitBgArray;
+
+
 }
 
 @property (nonatomic, strong) SoundTool *soundTool;
@@ -38,7 +51,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    fruitNameArray = [NSArray arrayWithObjects:[UIColor redColor],[UIColor greenColor],[UIColor blueColor], nil];
+    fruitImageArray = [NSArray arrayWithObjects:@"6",@"7",@"8", nil];
+    fruitBgArray = [NSArray arrayWithObjects:[UIColor blackColor],[UIColor orangeColor],[UIColor whiteColor], nil];
     
     [self setupUI];
 }
@@ -50,7 +65,7 @@
     [self.view addSubview:imageView];
     
     //底部图片
-    roadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 460, kScreenWidth + 50, 112)];
+    roadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 112, kScreenWidth + 50, 112)];
     roadView.image = [UIImage imageNamed:@"road"];
     [self.view addSubview:roadView];
     
@@ -102,6 +117,7 @@
 
 #pragma mark 绘制柱子
 -(void)pipe {
+    
     //通道高度
     NSInteger tunnelHeight = 0;
     //根据游戏难度设定通道高度
@@ -120,14 +136,23 @@
     //柱子图像
     NSInteger tall = arc4random() % 200 + 40;
     
-    topPipe = [[UIImageView alloc]initWithFrame:CGRectMake(320, -20, 70, tall)];
+    topPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, -20, 70, tall)];
     topPipe.image = [UIImage imageNamed:@"pipe"];
     [self.view addSubview:topPipe];
 
-    bottomPipe = [[UIImageView alloc]initWithFrame:CGRectMake(320, tall + tunnelHeight, 70, 400)];
+    bottomPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, tall + tunnelHeight, 70, kScreenHeight - (tall + tunnelHeight))];
     bottomPipe.image = [UIImage imageNamed:@"pipe"];
     [self.view addSubview:bottomPipe];
+    
+    //添加水果
+    fruitView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth + (70 - 50)/2, -10 + tall + (tunnelHeight - 50)/2, 50, 50)];
+    //初始随机值
+    currentArcNum = arc4random() % 3;
 
+    fruitView.image =[UIImage imageNamed:fruitImageArray[currentArcNum]];
+    fruitView.backgroundColor = fruitNameArray[currentArcNum];
+    [self.view addSubview:fruitView];
+    
     //把底部图片视图放在柱子视图上面
     [self.view insertSubview:roadView aboveSubview:bottomPipe];
 }
@@ -144,17 +169,20 @@
     
     //上升
     if (isTap == NO) {
-        CGRect frame = birdsView.frame;
-        frame.origin.y -= 3;
-        number += 3;
-        birdsView.frame = frame;
-        if (number >= 60) {
+        if (birdsView.frame.origin.y <= 0) {
             isTap = YES;
+        }else {
+            CGRect frame = birdsView.frame;
+            frame.origin.y -= 3;
+            number += 3;
+            birdsView.frame = frame;
+            if (number >= 60) {
+                isTap = YES;
+            }
         }
     }
-    
     //下降
-    if(isTap == YES && birdsView.frame.origin.y < 370){
+    if(isTap == YES && birdsView.frame.origin.y < kScreenHeight){
         CGRect frame = birdsView.frame;
         frame.origin.y++;
         number -= 2;
@@ -169,6 +197,12 @@
     bottomPipeFrame.origin.x--;
     topPipe.frame = topPipeFrame;
     bottomPipe.frame = bottomPipeFrame;
+    
+    //水果移动
+    CGRect fruteFrame = fruitView.frame;
+    fruteFrame.origin.x--;
+    fruitView.frame = fruteFrame;
+    
     if (topPipeFrame.origin.x < -70) {
         [self pipe];
     }
@@ -183,6 +217,8 @@
     if (topPipeFrame.origin.x == (100 + 30 - 70)) {
         [self.soundTool playSoundByFileName:@"pipe"];
         [self columnLabelClick];
+        //水果变字
+        fruitView.backgroundColor = fruitBgArray[currentArcNum];
     }
 }
 
@@ -230,7 +266,9 @@
 #pragma mark 弹出游戏结束操作界面
 -(void)pullGameOver {
     //游戏结束操作界面
-    gameOver = [[GameOverView alloc] initWithFrame:CGRectMake(20, 160, 280, 300)];
+    
+    gameOver = [[GameOverView alloc] initWithFrame:CGRectMake((kScreenWidth - 280)/2, (kScreenHeight
+                                                              - 300)/2, 280, 300)];
     gameOver.delegate = self;
     [self.view addSubview:gameOver];
 }

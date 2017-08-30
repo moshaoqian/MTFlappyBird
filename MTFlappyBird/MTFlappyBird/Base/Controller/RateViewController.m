@@ -33,7 +33,7 @@
     
     //标题
     CGFloat titleX = (kScreenWidth - kMainTitleW) / 2;
-    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80, kMainTitleW, kMainTitleH)];
+    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80 + 50, kMainTitleW, kMainTitleH)];
     titleView.image = [UIImage imageNamed:@"main"];
     [self.view addSubview:titleView];
     
@@ -41,7 +41,7 @@
     CGFloat tipsW = 280;
     CGFloat tipsH = 40;
     CGFloat tipsX = (kScreenWidth - tipsW) / 2;
-    UILabel *tips = [[UILabel alloc] initWithFrame:CGRectMake(tipsX, 150, tipsW, tipsH)];
+    UILabel *tips = [[UILabel alloc] initWithFrame:CGRectMake(tipsX, 150 + 50, tipsW, tipsH)];
     tips.text = @"The game difficulty";
     tips.font = [UIFont fontWithName:@"Marker Felt" size:30];
     tips.textAlignment = NSTextAlignmentCenter;
@@ -51,7 +51,7 @@
 
 -(void)setupTableView {
     CGFloat x = 80;
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 190, kScreenWidth-2*x, kScreenHeight - 230) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 190 + 50, kScreenWidth-2*x, kScreenHeight - 230) style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
