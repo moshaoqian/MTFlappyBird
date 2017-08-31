@@ -40,7 +40,7 @@
     
     //标题
     CGFloat titleX = (kScreenWidth - kMainTitleW) / 2;
-    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 80 + 50, kMainTitleW, kMainTitleH)];
+    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 20, kMainTitleW, kMainTitleH)];
     titleView.image = [UIImage imageNamed:@"main"];
     [self.view addSubview:titleView];
     
@@ -74,9 +74,11 @@
     [self.view addSubview:score];
     
     //birds动画
+    CGFloat birdValue;
+    birdValue = 203.0/308.0;
     NSMutableArray *birds = [[NSMutableArray alloc]init];
-    UIImageView *birdViews = [[UIImageView alloc]initWithFrame:CGRectMake((kScreenWidth - 40)/2, 155 + 50, 40, 32)];
-    for (NSInteger i = 1; i <= 3; i++) {
+    UIImageView *birdViews = [[UIImageView alloc]initWithFrame:CGRectMake((kScreenWidth - 60)/2, 155 + 50, 60, 60*birdValue)];
+    for (NSInteger i = 0; i < 3; i++) {
         UIImage *bird = [UIImage imageNamed:[NSString stringWithFormat:@"bird%zi", i]];
         [birds addObject:bird];
     }

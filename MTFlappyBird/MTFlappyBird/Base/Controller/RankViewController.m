@@ -30,11 +30,15 @@
 }
 
 -(void)setupUI {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"light"]];
-    
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg"]];
+    //开始底部图片
+    UIImageView *bgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    bgView.image = [UIImage imageNamed:@"bg"];
+    [self.view addSubview:bgView];
+
     //标题
     CGFloat titleX = (kScreenWidth - kMainTitleW) / 2;
-    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 180 - 50, kMainTitleW, kMainTitleH)];
+    UIImageView *titleView = [[UIImageView alloc]initWithFrame:CGRectMake(titleX, 20, kMainTitleW, kMainTitleH)];
     titleView.image = [UIImage imageNamed:@"main"];
     [self.view addSubview:titleView];
     

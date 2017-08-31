@@ -28,9 +28,14 @@
 #define kStartButtonW   100
 
 /**游戏名宽度*/
-#define kMainTitleW     200
+#define kMainTitleW     661/3
 /**游戏名高度*/
-#define kMainTitleH     50
+#define kMainTitleH     225/3
+
+/**柱子宽度*/
+#define kPipeW     275/3
+/**柱子高度*/
+#define kPipeeH     1589/3
 
 /**游戏分数区域高度*/
 #define kScoreViewH     120

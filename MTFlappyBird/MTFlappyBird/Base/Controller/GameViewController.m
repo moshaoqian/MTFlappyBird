@@ -39,6 +39,12 @@
     NSArray *fruitNameArray;
     //水果背景
     NSArray *fruitBgArray;
+    //水果名称
+    UIImageView* fruteNameView;
+    //标语
+    UIImageView* slogenView;
+    //花
+    UIImageView* flowerView;
 
 
 }
@@ -51,32 +57,51 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    fruitNameArray = [NSArray arrayWithObjects:[UIColor redColor],[UIColor greenColor],[UIColor blueColor], nil];
-    fruitImageArray = [NSArray arrayWithObjects:@"6",@"7",@"8", nil];
-    fruitBgArray = [NSArray arrayWithObjects:[UIColor blackColor],[UIColor orangeColor],[UIColor whiteColor], nil];
+    fruitNameArray = [NSArray arrayWithObjects:@"apple",@"pear",@"orange",@"banana",@"grape", nil];
+    fruitImageArray = [NSArray arrayWithObjects:@"01",@"02",@"03",@"04",@"05",nil];
+//    fruitBgArray = [NSArray arrayWithObjects:[UIColor blackColor],[UIColor orangeColor],[UIColor whiteColor], nil];
     
     [self setupUI];
 }
 
 -(void)setupUI {
+    
     //底图
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-    imageView.image = [UIImage imageNamed:@"night"];
+    imageView.image = [UIImage imageNamed:@"bg"];
     [self.view addSubview:imageView];
     
+    //Slogen
+    slogenView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth/(1080/304))];
+    slogenView.image = [UIImage imageNamed:@"xiaoyan"];
+    [self.view addSubview:slogenView];
+    
     //底部图片
-    roadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 112, kScreenWidth + 50, 112)];
+    roadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 135, (kScreenWidth + 50), 135)];
     roadView.image = [UIImage imageNamed:@"road"];
     [self.view addSubview:roadView];
     
+    //花
+    CGFloat flowerH = kScreenWidth/(1080/171);
+    flowerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 135 - flowerH + 3, kScreenWidth, flowerH)];
+    flowerView.image = [UIImage imageNamed:@"flowers"];
+    [self.view addSubview:flowerView];
+    
+    //水果名称
+    fruteNameView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth - 543/3)/2, kScreenHeight - 188/3 - 20, 543/3, 188/3)];
+    fruteNameView.alpha = 0;
+    [self.view addSubview:fruteNameView];
+
     //小鸟动画
     NSMutableArray *birds = [[NSMutableArray alloc]init];
-    for (NSInteger i = 1; i <= 3; i++) {
+    for (NSInteger i = 0; i < 3; i++) {
         NSString *name = [NSString stringWithFormat:@"bird%zi", i];
         UIImage *bird = [UIImage imageNamed:name];
         [birds addObject:bird];
     }
-    birdsView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 180, 39, 30)];
+    CGFloat birdValue;
+    birdValue = 203.0/308.0;
+    birdsView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 180, 60, 60* birdValue)];
     birdsView.animationDuration = 1;
     birdsView.animationImages = birds;
     birdsView.animationRepeatCount = 0;
@@ -113,6 +138,7 @@
     [self.view insertSubview:columnLabel atIndex:2];
     
     self.soundTool = [[SoundTool alloc] init];
+    
 }
 
 #pragma mark 绘制柱子
@@ -120,41 +146,44 @@
     
     //通道高度
     NSInteger tunnelHeight = 0;
+    CGFloat tunnelValue = 40.0;
     //根据游戏难度设定通道高度
     if([[DataTool stringForKey:kRateKey] isEqualToString:@"ordinary"]) {
-        tunnelHeight = 100;
+        tunnelHeight = 100 + tunnelValue;
     }else if([[DataTool stringForKey:kRateKey] isEqualToString:@"general"]) {
-        tunnelHeight = 90;
+        tunnelHeight = 90 + tunnelValue;
     }else if([[DataTool stringForKey:kRateKey] isEqualToString:@"difficult"]) {
-        tunnelHeight = 80;
+        tunnelHeight = 80 + tunnelValue;
     }else if([[DataTool stringForKey:kRateKey] isEqualToString:@"hard"]) {
-        tunnelHeight = 75;
+        tunnelHeight = 75 + tunnelValue;
     } else if([[DataTool stringForKey:kRateKey] isEqualToString:@"crazy"]) {
-        tunnelHeight = 70;
+        tunnelHeight = 70 + tunnelValue;
     }
     
     //柱子图像
-    NSInteger tall = arc4random() % 200 + 40;
+    NSInteger tall = arc4random() % 200 + kScreenWidth/(1080/304);
     
-    topPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, -20, 70, tall)];
+    topPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, -(kPipeeH - tall), kPipeW, kPipeeH)];
     topPipe.image = [UIImage imageNamed:@"pipe"];
     [self.view addSubview:topPipe];
-
-    bottomPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, tall + tunnelHeight, 70, kScreenHeight - (tall + tunnelHeight))];
+    
+    bottomPipe = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenWidth, tall + tunnelHeight, kPipeW, kPipeeH)];
     bottomPipe.image = [UIImage imageNamed:@"pipe"];
     [self.view addSubview:bottomPipe];
     
     //添加水果
-    fruitView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth + (70 - 50)/2, -10 + tall + (tunnelHeight - 50)/2, 50, 50)];
-    //初始随机值
-    currentArcNum = arc4random() % 3;
+    fruitView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth +  kPipeW + 10, tall + (tunnelHeight - 50)/2, 50, 50)];
+    
+    currentArcNum = arc4random() % 5;
 
     fruitView.image =[UIImage imageNamed:fruitImageArray[currentArcNum]];
-    fruitView.backgroundColor = fruitNameArray[currentArcNum];
     [self.view addSubview:fruitView];
     
     //把底部图片视图放在柱子视图上面
     [self.view insertSubview:roadView aboveSubview:bottomPipe];
+    [self.view insertSubview:flowerView aboveSubview:bottomPipe];
+    [self.view insertSubview:fruteNameView aboveSubview:roadView];
+    [self.view insertSubview:slogenView aboveSubview:roadView];
 }
 
 #pragma mark 定时器操作
@@ -203,7 +232,7 @@
     fruteFrame.origin.x--;
     fruitView.frame = fruteFrame;
     
-    if (topPipeFrame.origin.x < -70) {
+    if (topPipeFrame.origin.x < -kPipeW) {
         [self pipe];
     }
     
@@ -214,18 +243,23 @@
         [self.soundTool playSoundByFileName:@"punch"];
         [self onStop];
     }
-    if (topPipeFrame.origin.x == (100 + 30 - 70)) {
+    if (topPipeFrame.origin.x == (100 + 60 - kPipeW)) {
         [self.soundTool playSoundByFileName:@"pipe"];
         [self columnLabelClick];
-        //水果变字
-        fruitView.backgroundColor = fruitBgArray[currentArcNum];
+        //水果隐藏 -> 出现文字
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            fruitView.alpha = 0;
+            fruteNameView.alpha = 1;
+            fruteNameView.image = [UIImage imageNamed:fruitNameArray[currentArcNum]];
+        }];
     }
 }
 
 #pragma mark 更新分数
 -(void)columnLabelClick {
     
-    if (topPipeFrame.origin.x == (100 + 30 - 70)) {
+    if (topPipeFrame.origin.x == (100 + 60 - kPipeW)) {
         columnNumber++;
         columnLabel.text = [NSString stringWithFormat:@"%zi",columnNumber];
     }
